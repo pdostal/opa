@@ -55,6 +55,8 @@ def parse_log(url):
 def merge_lines(content):
   content = re.sub(r"mustmatch=\[\n", "mustmatch=[", content)
   content = re.sub(r"',\n", "',", content)
+  content = re.sub(r"='\n", "='", content)
+  content = re.sub(r"=\[\n", "=[", content)
   content = re.sub(r"\n],", "],", content)
   content = re.sub(' +', ' ', content)
   return content
@@ -64,7 +66,7 @@ def multiple_replace(adict, text):
   return regex.sub(lambda match: adict[match.group(0)], text)
 
 def filter_text(text):
-  if not re.match("^(MATCH\(|no match:|no change:|WARNING:|DEBUG_IO:)", text):
+  if not re.match("^(Routing to a callback|200 OK \(|GET \"/.*/isotovideo/status|MATCH\(|no match:|no change:|WARNING:|DEBUG_IO:)", text):
     text = re.sub(r"^(\|\||<<|>>)","", text)
     if not re.match("^(\||<|>)", text):
       text = "  "+text
